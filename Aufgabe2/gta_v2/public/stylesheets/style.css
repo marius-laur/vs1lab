@@ -243,10 +243,13 @@ a {
   color: var(--gray-color);
 }
 
-#map { 
-   height: auto;
-   
-  }
+.discovery__map { position: relative; }
+#map {
+    width: 100%;
+    height: 500px; 
+    
+}
+
 
 /* ### TODO ### Styles for Footer Component */
 

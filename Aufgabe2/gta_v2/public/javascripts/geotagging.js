@@ -9,8 +9,6 @@
 // Try to find this output in the browser...
 console.log("The geoTagging script is going to start...");
 
-const mapManager = new MapManager();
-
 /**
   * A class to help using the HTML5 Geolocation API.
   */
@@ -31,15 +29,15 @@ class LocationHelper {
         return this.#longitude;
     }
 
-   /**
-    * Create LocationHelper instance if coordinates are known.
-    * @param {string} latitude 
-    * @param {string} longitude 
-    */
-   constructor(latitude, longitude) {
-       this.#latitude = (parseFloat(latitude)).toFixed(5);
-       this.#longitude = (parseFloat(longitude)).toFixed(5);
-   }
+    /**
+     * Create LocationHelper instance if coordinates are known.
+     * @param {string} latitude 
+     * @param {string} longitude 
+     */
+    constructor(latitude, longitude) {
+        this.#latitude = (parseFloat(latitude)).toFixed(5);
+        this.#longitude = (parseFloat(longitude)).toFixed(5);
+    }
 
     /**
      * The 'findLocation' method requests the current location details through the geolocation API.
@@ -60,12 +58,21 @@ class LocationHelper {
         // These callbacks are given as arrow function expressions.
         geoLocationApi.getCurrentPosition((location) => {
             // Create and initialize LocationHelper object.
-            let helper = new LocationHelper(location.coords.latitude, location.coords.longitude);
+            const helper = new LocationHelper(location.coords.latitude, location.coords.longitude);
             // Pass the locationHelper object to the callback.
             callback(helper);
         }, (error) => {
-           alert(error.message)
+            alert(error.message);
+
+
+
+            // Fallback auf feste Koordinaten, damit trotzdem eine Karte aufgebaut wird
+            const helper = new LocationHelper(49.01513103745519, 8.390081162863467);
+            callback(helper);
         });
+
+
+
     }
 }
 
@@ -87,9 +94,15 @@ class MapManager {
         // set up dynamic Leaflet map
         this.#map = L.map('map').setView([latitude, longitude], zoom);
         var mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+
+        //'https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=yVoenMkXIb0XhXyQtAbs'
+
+
         L.tileLayer(
-            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; ' + mapLink + ' Contributors'}).addTo(this.#map);
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; ' + mapLink + ' Contributors'
+        }).addTo(this.#map);
+
         this.#markers = L.layerGroup().addTo(this.#map);
     }
 
@@ -106,12 +119,15 @@ class MapManager {
             .bindPopup("Your Location")
             .addTo(this.#markers);
         for (const tag of tags) {
-            L.marker([tag.latitude,tag.longitude])
+            L.marker([tag.latitude, tag.longitude])
                 .bindPopup(tag.name)
-                .addTo(this.#markers);  
+                .addTo(this.#markers);
         }
     }
 }
+
+
+const mapManager = new MapManager();
 
 /**
  * TODO: 'updateLocation'
@@ -119,7 +135,7 @@ class MapManager {
  * It is called once the page has been fully loaded.
  */
 function updateLocation() {
-    
+
     LocationHelper.findLocation((location) => {
         const tagLatitude = document.getElementById("tag-latitude-input");
         const tagLongitude = document.getElementById("tag-longitude-input");
@@ -148,7 +164,9 @@ function updateLocation() {
     });
 }
 
+
 // Execute this function automatically after loading the page
 document.addEventListener("DOMContentLoaded", () => {
     updateLocation();
 });
+
