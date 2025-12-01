@@ -9,6 +9,8 @@
 // Try to find this output in the browser...
 console.log("The geoTagging script is going to start...");
 
+const mapManager = new MapManager();
+
 /**
   * A class to help using the HTML5 Geolocation API.
   */
@@ -128,6 +130,21 @@ function updateLocation() {
         tagLongitude.value = location.longitude;
         discoveryLatitude.value = location.latitude;
         discoveryLongitude.value = location.longitude;
+
+        //Insert Marker into Leaflet Map
+        mapManager.initMap(location.latitude, location.longitude);
+        mapManager.updateMarkers(location.latitude, location.longitude);
+
+        //Marker onto the map
+        const placeholderImg = document.querySelector(".discovery__map img");
+        const placeholderText = document.querySelector(".discovery__map span");
+        if (placeholderImg) {
+            placeholderImg.remove();
+        }
+        if (placeholderText) {
+            placeholderText.remove();
+        }
+        
     });
 }
 
