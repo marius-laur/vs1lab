@@ -244,8 +244,9 @@ a {
 }
 
 #map { 
-   height: 500px;
-}
+   height: auto;
+   
+  }
 
 /* ### TODO ### Styles for Footer Component */
 

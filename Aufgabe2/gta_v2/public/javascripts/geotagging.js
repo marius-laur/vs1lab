@@ -121,10 +121,10 @@ class MapManager {
 function updateLocation() {
     
     LocationHelper.findLocation((location) => {
-        let tagLatitude = document.getElementById("tag-latitude-input");
-        let tagLongitude = document.getElementById("tag-longitude-input");
-        let discoveryLatitude = document.getElementById("discovery-latitude-input");
-        let discoveryLongitude = document.getElementById("discovery-longitude-input");
+        const tagLatitude = document.getElementById("tag-latitude-input");
+        const tagLongitude = document.getElementById("tag-longitude-input");
+        const discoveryLatitude = document.getElementById("discovery-latitude-input");
+        const discoveryLongitude = document.getElementById("discovery-longitude-input");
 
         tagLatitude.value = location.latitude;
         tagLongitude.value = location.longitude;
@@ -144,7 +144,7 @@ function updateLocation() {
         if (placeholderText) {
             placeholderText.remove();
         }
-        
+
     });
 }
 
