@@ -222,8 +222,6 @@ a {
   justify-content: start;
   gap: 25px;
   padding-top: 25px;
-  border: solid 3px red;
-
 }
 
 .main .discovery .discovery__wrapper .discovery__taglist .discovery__results{
@@ -241,7 +239,6 @@ a {
 
 .main .discovery .discovery__wrapper .discovery__map{
   height: 100%;
-  border: solid 3px red;
 }
 
 .main .discovery .discovery__wrapper #map-image{
