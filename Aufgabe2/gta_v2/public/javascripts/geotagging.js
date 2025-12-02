@@ -117,14 +117,15 @@ class MapManager {
  * It is called once the page has been fully loaded.
  */
 function updateLocation() {
-    let mapManager = new MapManager();
+    const mapManager = new MapManager();
 
     LocationHelper.findLocation((location) => {
+        
         let tagLatitude = document.getElementById("tag-latitude-input");
         let tagLongitude = document.getElementById("tag-longitude-input");
         let discoveryLatitude = document.getElementById("discovery-latitude-input");
         let discoveryLongitude = document.getElementById("discovery-longitude-input");
-
+        
         tagLatitude.value = location.latitude;
         tagLongitude.value = location.longitude;
         discoveryLatitude.value = location.latitude;
