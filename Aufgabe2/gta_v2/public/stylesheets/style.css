@@ -215,10 +215,15 @@ a {
 
 .main .discovery .discovery__wrapper{
   display: flex;
+  height: 80vh;
+  min-height: 50px;
+  max-height: 500px;
   width: 100%;
   justify-content: start;
   gap: 25px;
   padding-top: 25px;
+  border: solid 3px red;
+
 }
 
 .main .discovery .discovery__wrapper .discovery__taglist .discovery__results{
@@ -234,17 +239,19 @@ a {
   margin-bottom: 15px;
 }
 
-.main .discovery .discovery__wrapper .discovery__map img{
+.main .discovery .discovery__wrapper .discovery__map{
+  height: 100%;
+  border: solid 3px red;
+}
+
+.main .discovery .discovery__wrapper #map-image{
+  height: 100%;
   width: 100%; 
 }
 
-.main .discovery .discovery__wrapper .discovery__map span{
+.main .discovery .discovery__wrapper #map-description{
   display: block;
   color: var(--gray-color);
-}
-
-#map { 
-   height: 500px;
 }
 
 /* ### TODO ### Styles for Footer Component */

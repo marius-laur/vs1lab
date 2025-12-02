@@ -117,7 +117,8 @@ class MapManager {
  * It is called once the page has been fully loaded.
  */
 function updateLocation() {
-    
+    let mapManager = new MapManager();
+
     LocationHelper.findLocation((location) => {
         let tagLatitude = document.getElementById("tag-latitude-input");
         let tagLongitude = document.getElementById("tag-longitude-input");
@@ -128,6 +129,11 @@ function updateLocation() {
         tagLongitude.value = location.longitude;
         discoveryLatitude.value = location.latitude;
         discoveryLongitude.value = location.longitude;
+
+        mapManager.initMap(location.latitude, location.longitude);
+        mapManager.updateMarkers(location.latitude, location.longitude);
+        document.getElementById("map-image").remove();
+        document.getElementById("map-description").remove();
     });
 }
 
