@@ -1,0 +1,358 @@
+/*
+  File origin: VS1LAB A1b  
+
+  CSS style is BEM. Classes used for CSS, IDs for JavaScript querying (future use).
+  CSS variables used for clarity and themability (e.g. through SSR). 
+  Inherited box sizing used for ease of including 3rd party content-box components.
+*/
+
+/* Global styling */
+
+html {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+
+  /* This approach prevents issues with 3rd party content-box components */
+  box-sizing: inherit;
+}
+
+
+/* Variables (example: see declaration for "a" below) */
+
+:root {
+  --link-color: #003e58;
+  --font-color-normal: #005f88;
+  --font-color-dark: #153c4d;
+  --font-color-light: #d7f1ff;
+  --background-color: #ffffff;
+  --main-color1: #d7f1ff;
+  --main-color2: #005f87;
+  --border-color: #6393fd;
+  --default-border-radius: 8px;
+}
+
+
+/* HTML element styles */
+
+body {
+  font: 14px "Trebuchet MS", Helvetica, sans-serif;
+  color: var(--font-color-dark);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--background-color);
+}
+
+a {
+  color: var(--link-color);
+}
+
+
+/* Grid styles */
+.row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+}
+.col-1 {
+  width: calc(8.33% - 1rem);
+}
+.col-2 {
+  width: calc(16.66% - 1rem);
+}
+.col-3 {
+  width: calc(25% - 1rem);
+}
+.col-4 {
+  width: calc(33.33% - 1rem);
+}
+.col-5 {
+  width: calc(41.66% - 1rem);
+}
+.col-6 {
+  width: calc(50% - 1rem);
+}
+.col-7 {
+  width: calc(58.33% - 1rem);
+}
+.col-8 {
+  width: calc(66.66% - 1rem);
+}
+.col-9 {
+  width: calc(75% - 1rem);
+}
+.col-10 {
+  width: calc(83.33% - 1rem);
+}
+.col-11 {
+  width: calc(91.66% - 1rem);
+}
+.col-12 {
+  width: calc(100% - 1rem);
+}
+
+/* Styles for Header Component */
+
+.header {
+  padding: 50px 50px;
+  background-color: var(--main-color1);
+  display: flex;
+  justify-content: center;
+}
+
+.header .header-elements{
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.header #header-image-container img{
+  width: 100%;
+  min-width: 10px;
+  max-width: 95px;
+}
+
+.header #header-title-container h1{
+  width: 100%;
+  text-align: center;
+  font-size: 40px;
+  color: var(--font-color-dark);
+}
+
+.header #header-navigation-container nav{
+  width: 100%;
+  text-align: right; 
+  gap: 6px;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.header #header-navigation-container nav a{
+  text-decoration: none;
+}
+
+/* Styles for Main Component */
+
+.main{
+  display: flex;
+  width: 100%;
+  padding: 30px 2%;
+  gap: 25px;
+}
+
+/* general styles for form elements */
+
+.main form label{
+  font: bold 14px "Trebuchet MS", Helvetica, sans-serif;
+  color: var(--font-color-normal);
+}
+
+.main input{
+  display: block;
+  width: 100%;
+  padding: 10px 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  font: 14px "Trebuchet MS", Helvetica, sans-serif;
+
+  border: solid 1px var(--border-color);
+  border-radius: var(--default-border-radius);
+}
+
+.main fieldset{
+  padding: 20px;
+  background-color: var(--main-color1);
+  border: 0px;
+  border-radius: var(--default-border-radius);
+}
+
+.main fieldset legend{
+  color: var(--font-color-dark);
+  font-weight: bold;
+}
+
+/* Styles for Tagging component */
+
+.main .tagging h2{
+  padding-bottom: 15px;
+}
+
+.main .tagging form fieldset #tag-form-submit{
+  border: 0px;
+  color: var(--font-color-light);
+  font-weight: bold;
+  background: var(--main-color2);
+  width: 100%;
+}
+
+/* Styles for Discovery component */
+
+.main .discovery h2{
+  padding-bottom: 15px;
+}
+
+.main .discovery form fieldset input{
+  width: 20%;
+}
+
+.main .discovery form fieldset #discovery-search-submit{
+  border: 0px;
+  color: var(--font-color-light);
+  font-weight: bold;
+  background: var(--main-color2);
+}
+
+.main .discovery .discovery__wrapper .discovery__taglist .discovery__results{
+  list-style: none;
+  background-color: var(--main-color1);
+  border-radius: var(--default-border-radius);
+}
+
+.main .discovery .discovery__wrapper .discovery__taglist .discovery__results li{
+  padding: 10px;
+  border: 0px;
+  border-radius: var(--default-border-radius);
+  color: var(--font-color-light);
+  font-weight: bold;
+  background: var(--main-color2);
+  margin-bottom: 15px;
+}
+
+.main .discovery .discovery__wrapper{
+  display: flex;
+  height: auto;
+  width: 100%;
+  gap: 25px;
+  padding-top: 20px;
+  margin-bottom: 15px;
+}
+
+.main .discovery .discovery__wrapper #map{
+  border-radius: var(--default-border-radius);
+  height: 80vh;
+  min-height: 10px;
+}
+
+.main .discovery .discovery__wrapper #map-image{
+  height: 100%;
+  max-height: 500px;
+  border-radius: var(--default-border-radius);
+}
+
+.main .discovery .discovery__wrapper span{
+  display: block;
+  color: var(--gray-color);
+}
+
+/* Styles for Footer Component */
+
+.footer{
+  height: 100px;
+  background-color: var(--main-color1);
+  display: flex;
+  align-items: center;
+}
+
+.footer span{
+  width: 90%;
+  margin: 0 auto;
+  font-weight: bold;
+}
+
+
+
+/* Media Queries */
+
+@media screen and (max-width: 1024px) {
+  .main {
+    flex-direction: column;
+  }
+
+  .header{
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .header-elements{
+    justify-content: center;
+    text-align: center;
+  }
+
+  .header #header-image-container{
+    text-align: center;
+  }
+
+  .header #header-navigation-container nav{
+    flex-direction: row;
+    text-align: center;
+  }
+
+  .col-1 {
+    width: 100%;
+  }
+  .col-2 {
+    width: 100%;
+  }
+  .col-3 {
+    width: 100%;
+  }
+  .col-4 {
+    width: 100%;
+  }
+  .col-5 {
+    width: 100%;
+  }
+  .col-6 {
+    width: 100%;
+  }
+  .col-7 {
+    width: 100%;
+  }
+  .col-8 {
+    width: 100%;
+  }
+  .col-9 {
+    width: 100%;
+  }
+  .col-10 {
+    width: 100%;
+  }
+  .col-11 {
+    width: 100%;
+  }
+  .col-12 {
+    width: 100%;
+  }
+
+  .main .tagging form fieldset input{
+    width: 100%;
+  }
+
+  .main .discovery form fieldset input{
+    width: 100%;
+  }
+
+  .main .discovery form fieldset #discovery-search-submit{
+    width: 100%;
+  }
+
+  .main .discovery .discovery__wrapper{
+    height: auto;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .row{
+    flex-direction: column;
+  }
+
+  .main .discovery .discovery__wrapper #map-image{
+    width: 100%;
+    text-align: center;
+  }
+}
