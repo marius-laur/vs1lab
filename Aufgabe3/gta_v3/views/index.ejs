@@ -1,5 +1,151 @@
 <!-- TODO: HTML AUS AUFGABE2 HIERHER KOPIEREN UND DIE BEISPIEL-EINTRÄGE DER DISCOVERY-LISTE MIT DEN FOLGENDEN ZEILEN ERSETZEN -->
+<!DOCTYPE html>
 
-<% if (taglist !== undefined) taglist.forEach(function(gtag) { %>
-    <li><%= gtag.name %> ( <%= gtag.latitude %>,<%= gtag.longitude %>) <%= gtag.hashtag %> </li>
-<% }); %>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>GeoTagApp</title>
+    <link rel="stylesheet"
+          href="./stylesheets/style.css" />
+
+    <!-- Leaflet CSS and JavaScript (in this order) -->
+    <link rel='stylesheet' href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <header class="header row">
+        <div class="header-elements col-4"
+             id="header-image-container">
+            <img src="./images/location.png"
+                id="header-image"
+                alt="an image of a map and location">
+        </div>
+        <div class="header-elements col-4" id="header-title-container">
+            <h1 id="header-title">GeoTagApp</h1>
+        </div>
+        <div class="header-elements col-4" id="header-navigation-container">
+            <nav id="header-navigation">
+                <a href="#">About</a> / <a href="#">Help</a> / <a href="/">Home</a>
+            </nav>
+        </div>
+
+    </header>
+
+    <main class="main row">
+        <section class="main__tagging tagging col-3">
+            <h2>Tagging</h2>
+
+            <!-- ############### Tag Form-->
+            <form id="tag-form"
+                  action="/tagging"
+                  method="post">
+
+                <fieldset id="tag-form-fieldset">
+                    <legend id="tag-form-legend">Add a new GeoTag</legend>
+
+                    <label id="tag-latitude-label" for="tag-latitude-input">Latitude</label>
+                    <input type="text"
+                           id="tag-latitude-input"
+                           value="49.01379"
+                           readonly>
+
+                    <label id="tag-longitude-label" for="tag-longitude-input">Longitude</label>
+                    <input type="text"
+                           id="tag-longitude-input"
+                           value="8.404435"
+                           readonly>
+
+                    <label id="tag-name-label" for="tag-name-input">Name</label>
+                    <input type="text"
+                           id="tag-name-input"
+                           placeholder="e.g. Koeri-Werk"
+                           maxlength="10"
+                           required>
+
+                    <label id="tag-hashtag-label" for="tag-hashtag-input">Hashtag</label>
+                    <input type="text"
+                           id="tag-hashtag-input"
+                           placeholder="e.g. #essen"
+                           pattern="#[A-Za-z]+"
+                           maxlength="11">
+
+                    <input type="submit"
+                           id="tag-form-submit"
+                           value="Create Tag">
+
+                </fieldset>
+
+            </form>
+        </section>
+
+        <section class="main__discovery discovery col-9">
+            <h2 class="discovery__title">Discovery</h2>
+
+            <!-- ############### Discovery Form -->
+            <form class="discovery__search" id="discoveryFilterForm" action="/discovery" method="post">
+
+                <fieldset id="discovery-fieldset">
+                    <legend id="discovery-legend">Search</legend>
+
+                    <label id="discovery-search-label" for="discovery-search-input">Search Term</label>
+                    <input type="text" 
+                    id="discovery-search-input" 
+                    placeholder="e.g. Hochschule Karlsruhe">
+
+                    <input type="hidden" 
+                    id="discovery-latitude-input">
+
+                    <input type="hidden" 
+                    id="discovery-longitude-input">
+
+                    <input type="submit" 
+                    id="discovery-search-submit" 
+                    value="Search">
+
+                </fieldset>
+            </form>
+
+            <!-- ############### Discovery Wrapper -->
+            <div class="discovery__wrapper row">
+                <div class="discovery__taglist col-4">
+                    <fieldset id="discovery-results-fieldset">
+                        <legend id="discovery-results-legend">Results</legend>
+                        <ul class="discovery__results"
+                            id="discoveryResults">
+                            <% if (taglist !== undefined) taglist.forEach(function(gtag) { %>
+                                <li><%= gtag.name %> ( <%= gtag.latitude %>,<%= gtag.longitude %>) <%= gtag.hashtag %> </li>
+                            <% }); %>
+                        </ul>
+                    </fieldset>
+                </div>
+
+                <div id="map" class="discovery__map col-8">
+                    <img id="map-image"
+                         src="./images/mapview.jpg"
+                         alt="a map with locations"> 
+                    <span id="map-description">Result map</span>
+                </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <span>(c) 2021/22 HKA_IWI_VSYS</span>
+    </footer>
+
+    <!-- Load JavaScripts -->
+    <script src="./javascripts/geotagging.js"></script>
+</body>
+
+</html>
