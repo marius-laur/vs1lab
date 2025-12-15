@@ -47,6 +47,7 @@ const geoTagStore = new InMemoryGeoTagStore();
 // TODO: extend the following route example if necessary
 router.get('/', (req, res) => {
   GeoTagExamples.fillExampleTags(geoTagStore);
+  
   res.render('index', {
     taglist: [],
     tagLatitude: "",

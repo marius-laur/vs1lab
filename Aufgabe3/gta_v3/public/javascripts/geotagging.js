@@ -23,6 +23,10 @@ const hasCoordinates = tagLatitude.value !== ""
     if (!hasCoordinates) {
     
         console.log("updated");
+        console.log(tagLatitude.value);
+        console.log(tagLongitude.value);
+        console.log(discoveryLatitude.value);
+        console.log(discoveryLongitude.value);
 
         LocationHelper.findLocation((location) => {
             tagLatitude.value = location.latitude;
