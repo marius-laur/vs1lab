@@ -4,12 +4,15 @@
 
 // This script is executed when the browser loads index.html
 
+// Global variable to store mapManager instance
+let mapManager;
+
 /**
  * A function to retrieve the current location and update the page.
  * It is called once the page has been fully loaded.
  */
 function updateLocation() {
-    const mapManager = new MapManager();
+    mapManager = new MapManager();
     let tagLatitude = document.getElementById("tag-latitude-input");
     let tagLongitude = document.getElementById("tag-longitude-input");
     let discoveryLatitude = document.getElementById("discovery-latitude-input");
@@ -44,6 +47,9 @@ function updateLocation() {
         if (mapDescription) {
             mapDescription.remove();
         }
+
+        // Add click event listeners to result items
+        attachResultItemClickListeners(tagsArray);
     };
 
     if (!hasCoordinates) {
@@ -60,6 +66,23 @@ function updateLocation() {
         // Use existing coordinates from form fields
         processLocation(parseFloat(tagLatitude.value), parseFloat(tagLongitude.value));
     }
+}
+
+/**
+ * Attach click event listeners to result list items
+ * @param {Array} tagsArray Array of GeoTag objects
+ */
+function attachResultItemClickListeners(tagsArray) {
+    let resultItems = document.querySelectorAll('.discovery__results li');
+    
+    resultItems.forEach((item, index) => {
+        item.addEventListener('click', function() {
+            if (tagsArray[index]) {
+                let tag = tagsArray[index];
+                mapManager.panToLocation(parseFloat(tag.latitude), parseFloat(tag.longitude), 18);
+            }
+        });
+    });
 }
 
 // Execute this function automatically after loading the page

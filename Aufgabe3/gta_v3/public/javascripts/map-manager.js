@@ -57,4 +57,16 @@
                 .addTo(this.#markers);  
         }
     }
+
+    /**
+    * Pan and zoom the map to a specific location
+    * @param {number} latitude The target latitude
+    * @param {number} longitude The target longitude
+    * @param {number} zoom The zoom level, defaults to 18
+    */
+    panToLocation(latitude, longitude, zoom = 18) {
+        if (this.#map) {
+            this.#map.setView([latitude, longitude], zoom);
+        }
+    }
 }
