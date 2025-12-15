@@ -37,7 +37,10 @@ class GeoTagExamples {
 
     static fillExampleTags(geoTagStore) {
         for (let i = 0; i < this.tagList.length; i++) {
-            geoTagStore.addGeoTag(new GeoTag(this.tagList[i][0], this.tagList[i][1], this.tagList[i][2], this.tagList[i][3]));       
+            let geotag = new GeoTag(this.tagList[i][0], this.tagList[i][1], this.tagList[i][2], this.tagList[i][3]);
+            if (!this.tagList[i].includes(geotag)) {
+                geoTagStore.addGeoTag(geotag);       
+            }
         }
     }
 }
