@@ -54,35 +54,30 @@
                 <fieldset id="tag-form-fieldset">
                     <legend id="tag-form-legend">Add a new GeoTag</legend>
 
+                    <%
+                        let tagLat = 49.01379;
+                        let tagLong = 8.404435;
+                        if (typeof tagLatitude !== 'undefined') { 
+                            tagLat = tagLatitude;
+                        }
+                        if (typeof tagLongitude !== 'undefined') {
+                            tagLong = tagLongitude;
+                        }
+                    %>
+
                     <label id="tag-latitude-label" for="tag-latitude-input">Latitude</label>
-                    <% if (typeof tagLatitude === 'undefined') { %>                    
                     <input type="text"
                            id="tag-latitude-input"
                            name="tagLatitude"
-                           value="49.01379"
+                           value="<%= tagLat %>"
                            readonly>
-                    <% } else { %>
-                    <input type="text"
-                           id="tag-latitude-input"
-                           name="tagLatitude"
-                           value="<%= tagLatitude %>"
-                           readonly>
-                    <% } %>
                  
                     <label id="tag-longitude-label" for="tag-longitude-input">Longitude</label>
-                    <% if (typeof tagLongitude === 'undefined') { %>   
                     <input type="text"
                            id="tag-longitude-input"
                            name="tagLongitude"
-                           value="8.404435"
+                           value="<%= tagLong %>"
                            readonly>
-                    <% } else { %>
-                    <input type="text"
-                           id="tag-longitude-input"
-                           name="tagLongitude"
-                           value="<%= tagLongitude %>"
-                           readonly>
-                    <% } %>
 
                     <label id="tag-name-label" for="tag-name-input">Name</label>
                     <input type="text"
@@ -124,27 +119,27 @@
                     name="discoverySearch" 
                     placeholder="e.g. Hochschule Karlsruhe">
 
-                    <% if (typeof discoveryLatitude === 'undefined') { %>
-                    <input type="hidden" 
-                    id="discovery-latitude-input"
-                    name="discoveryLatitude">
-                    <% } else { %>
+
+                    <%
+                        let disLat = 0.0;
+                        let disLong = 0.0;
+                        if (typeof discoveryLatitude !== 'undefined') { 
+                            disLat = discoveryLatitude;
+                        }
+                        if (typeof discoveryLongitude !== 'undefined') {
+                            disLong = discoveryLongitude;
+                        }
+                    %>
+
                     <input type="hidden" 
                     id="discovery-latitude-input"
                     name="discoveryLatitude"
-                    value="<%= discoveryLatitude %>">
-                    <% } %>
+                    value="<%= disLat %>">
 
-                    <% if (typeof discoveryLongitude === 'undefined') { %>
-                    <input type="hidden" 
-                    id="discovery-longitude-input"
-                    name="discoveryLongitude">
-                    <% } else { %>
                     <input type="hidden" 
                     id="discovery-longitude-input"
                     name="discoveryLongitude"
-                    value="<%= discoveryLongitude %>">
-                    <% } %>
+                    value="<%= disLong %>">
 
                     <input type="submit" 
                     id="discovery-search-submit" 
@@ -168,7 +163,7 @@
                 </div>
 
                 <div id="map" class="discovery__map col-8"
-                    data-tags='<%= JSON.stringify(taglist) %>'>
+                    data-tags="<%= JSON.stringify(taglist) %>">
                 </div>
         </section>
 
