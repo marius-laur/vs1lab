@@ -53,29 +53,18 @@
                 <fieldset id="tag-form-fieldset">
                     <legend id="tag-form-legend">Add a new GeoTag</legend>
 
-                    <%
-                        let tagLat = ""; //49.01379
-                        let tagLong = ""; //8.404435
-                        if (typeof tagLatitude !== 'undefined') { 
-                            tagLat = tagLatitude;
-                        }
-                        if (typeof tagLongitude !== 'undefined') {
-                            tagLong = tagLongitude;
-                        }
-                    %>
-
                     <label id="tag-latitude-label" for="tag-latitude-input">Latitude</label>
                     <input type="text"
                            id="tag-latitude-input"
                            name="tagLatitude"
-                           value="<%= tagLat %>"
+                           value="<%= locals.tagLat %>"
                            readonly>
                  
                     <label id="tag-longitude-label" for="tag-longitude-input">Longitude</label>
                     <input type="text"
                            id="tag-longitude-input"
                            name="tagLongitude"
-                           value="<%= tagLong %>"
+                           value="<%= locals.tagLong %>"
                            readonly>
 
                     <label id="tag-name-label" for="tag-name-input">Name</label>
@@ -118,27 +107,15 @@
                     name="discoverySearch" 
                     placeholder="e.g. Hochschule Karlsruhe">
 
-
-                    <%
-                        let disLat = "";
-                        let disLong = "";
-                        if (typeof discoveryLatitude !== 'undefined') { 
-                            disLat = discoveryLatitude;
-                        }
-                        if (typeof discoveryLongitude !== 'undefined') {
-                            disLong = discoveryLongitude;
-                        }
-                    %>
-
                     <input type="hidden" 
                     id="discovery-latitude-input"
                     name="discoveryLatitude"
-                    value="<%= disLat %>">
+                    value="<%= locals.disLat %>">
 
                     <input type="hidden" 
                     id="discovery-longitude-input"
                     name="discoveryLongitude"
-                    value="<%= disLong %>">
+                    value="<%= locals.disLong %>">
 
                     <input type="submit" 
                     id="discovery-search-submit" 

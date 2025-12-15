@@ -10,47 +10,54 @@
  */
 function updateLocation() {
     const mapManager = new MapManager();
-    let tagLatitude = document.getElementById("tag-latitude-input");
-    let tagLongitude = document.getElementById("tag-longitude-input");
-    let discoveryLatitude = document.getElementById("discovery-latitude-input");
-    let discoveryLongitude = document.getElementById("discovery-longitude-input");
 
-const hasCoordinates = tagLatitude.value !== ""
-        && tagLongitude.value !== "" 
-        && discoveryLatitude.value !== "" 
-        && discoveryLongitude.value !== "";
+    const tagLatitude = document.getElementById("tag-latitude-input");
+    const tagLongitude = document.getElementById("tag-longitude-input");
+    const discoveryLatitude = document.getElementById("discovery-latitude-input");
+    const discoveryLongitude = document.getElementById("discovery-longitude-input");
 
-    if (!hasCoordinates) {
-    
-        console.log("updated");
-        console.log(tagLatitude.value);
-        console.log(tagLongitude.value);
-        console.log(discoveryLatitude.value);
-        console.log(discoveryLongitude.value);
+    const tagCoordsPresent = tagLatitude.value !== "" && tagLongitude.value !== "";
+    const discoveryCoordsPresent = discoveryLatitude.value !== "" && discoveryLongitude.value !== "";
 
-        LocationHelper.findLocation((location) => {
-            tagLatitude.value = location.latitude;
-            tagLongitude.value = location.longitude;
-            discoveryLatitude.value = location.latitude;
-            discoveryLongitude.value = location.longitude;
+    const initMapWithTags = (lat, lng) => {
+        mapManager.initMap(lat, lng);
 
-            mapManager.initMap(location.latitude, location.longitude);
+        const mapDiv = document.getElementById("map");
+        let tags = [];
 
-            // Read GeoTags from data-tags
-            let mapDiv = document.getElementById("map");
-            let tagsJson = mapDiv.getAttribute("data-tags");
-            let tagsArray = [];
-            if (tagsJson) {
-                tagsArray = JSON.parse(tagsJson);
-            }
+        const tagsJson = mapDiv.getAttribute("data-tags");
+        if (tagsJson) {
+            tags = JSON.parse(tagsJson);
+        }
 
-            // Update markers including GeoTags
-            mapManager.updateMarkers(location.latitude, location.longitude, tagsArray);
+        mapManager.updateMarkers(lat, lng, tags);
 
-            document.getElementById("map-image").remove();
-            document.getElementById("map-description").remove();
-        });
+        const mapImage = document.getElementById("map-image");
+        const mapDescription = document.getElementById("map-description");
+        if (mapImage) mapImage.remove();
+        if (mapDescription) mapDescription.remove();
+    };
+    if (tagCoordsPresent || discoveryCoordsPresent) {
+        const lat = tagCoordsPresent ? tagLatitude.value : discoveryLatitude.value;
+        const lng = tagCoordsPresent ? tagLongitude.value : discoveryLongitude.value;
+        initMapWithTags(lat, lng);
+        return;
     }
+
+    console.log("updated");
+    console.log(tagLatitude.value);
+    console.log(tagLongitude.value);
+    console.log(discoveryLatitude.value);
+    console.log(discoveryLongitude.value);
+
+    LocationHelper.findLocation((location) => {
+        tagLatitude.value = location.latitude;
+        tagLongitude.value = location.longitude;
+        discoveryLatitude.value = location.latitude;
+        discoveryLongitude.value = location.longitude;
+    
+        initMapWithTags(location.latitude, location.longitude);
+    });
 }
 
 // Execute this function automatically after loading the page
