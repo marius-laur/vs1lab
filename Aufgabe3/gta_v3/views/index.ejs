@@ -167,11 +167,8 @@
                     </fieldset>
                 </div>
 
-                <div id="map" class="discovery__map col-8">
-                    <img id="map-image"
-                         src="./images/mapview.jpg"
-                         alt="a map with locations"> 
-                    <span id="map-description">Result map</span>
+                <div id="map" class="discovery__map col-8"
+                    data-tags='<%= JSON.stringify(taglist) %>'>
                 </div>
         </section>
 

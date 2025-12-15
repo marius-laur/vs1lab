@@ -132,7 +132,18 @@ function updateLocation() {
         discoveryLongitude.value = location.longitude;
 
         mapManager.initMap(location.latitude, location.longitude);
-        mapManager.updateMarkers(location.latitude, location.longitude);
+        
+        // Read GeoTags from data-tags
+        let mapDiv = document.getElementById("map");
+        let tagsJson = mapDiv.getAttribute("data-tags");
+        let tagsArray = [];
+        if (tagsJson) {
+            tagsArray = JSON.parse(tagsJson);
+        }
+
+        // Update markers including GeoTags
+        mapManager.updateMarkers(location.latitude, location.longitude, tagsArray);
+
         document.getElementById("map-image").remove();
         document.getElementById("map-description").remove();
     });
