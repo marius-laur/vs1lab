@@ -30,7 +30,7 @@ function updateLocation() {
         const latitude = tagCoordsPresent ? tagLatitude.value : discoveryLatitude.value;
         const longitude = tagCoordsPresent ? tagLongitude.value : discoveryLongitude.value;
         
-        initMap(mapManager, latitude, longitude);
+        updateMap(mapManager, latitude, longitude);
 
         return;
     }
@@ -41,7 +41,7 @@ function updateLocation() {
         discoveryLatitude.value = location.latitude;
         discoveryLongitude.value = location.longitude;
         
-        initMap(mapManager, location.latitude, location.longitude);
+        updateMap(mapManager, location.latitude, location.longitude);
     });
 }
 
