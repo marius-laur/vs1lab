@@ -188,6 +188,19 @@ a {
   font-weight: bold;
   background: var(--main-color2);
   width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.main .tagging form fieldset #tag-form-submit:hover{
+  background: var(--font-color-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.main .tagging form fieldset #tag-form-submit:active{
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Styles for Discovery component */
@@ -205,6 +218,19 @@ a {
   color: var(--font-color-light);
   font-weight: bold;
   background: var(--main-color2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.main .discovery form fieldset #discovery-search-submit:hover{
+  background: var(--font-color-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.main .discovery form fieldset #discovery-search-submit:active{
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .main .discovery .discovery__wrapper .discovery__taglist .discovery__results{
@@ -221,6 +247,19 @@ a {
   font-weight: bold;
   background: var(--main-color2);
   margin-bottom: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.main .discovery .discovery__wrapper .discovery__taglist .discovery__results li:hover{
+  background: var(--font-color-dark);
+  transform: translateX(5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.main .discovery .discovery__wrapper .discovery__taglist .discovery__results li:active{
+  transform: translateX(5px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .main .discovery .discovery__wrapper{
