@@ -100,11 +100,12 @@ class InMemoryGeoTagStore {
                 taglist.push(this.#geotags[i]);
             }
         }
+
         return taglist;
     }
 
     /**
-     * Returns all geotags that have a matching name/hashtag and are within a specific area.
+     * Returns all geotags that have a matching name/hashtag (not case-sensitive) and are within a specific area.
      *
      * @param {number} latitude  latitude in degrees
      * @param {number} longitude longitude in degrees
@@ -114,14 +115,16 @@ class InMemoryGeoTagStore {
      */
     searchNearbyGeoTags(latitude, longitude, radius, keyword) {
         let taglistNearby = this.getNearbyGeoTags(latitude, longitude, radius);
-        let taglistKeyword = [];
 
-        taglistNearby.forEach(element => {
-            if (element.name.includes(keyword) || element.hashtag.includes(keyword)) {
-                taglistKeyword.push(element);
-            }
-        });
-        return taglistKeyword;
+        if (!keyword || keyword.trim() === '') {
+            return taglistNearby;
+        }
+        keyword = keyword.toLowerCase();
+
+        return taglistNearby.filter(tag =>
+            tag.name.toLowerCase().includes(keyword) ||
+            tag.hashtag.toLowerCase().includes(keyword)
+        );
     }
 
     /**
