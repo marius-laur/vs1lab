@@ -72,7 +72,11 @@ router.post('/tagging', (req, res) => {
   geoTagStore.addGeoTag(new GeoTag(req.body.tagName, req.body.tagLatitude, req.body.tagLongitude, req.body.tagHashtag));
   let tags = geoTagStore.getNearbyGeoTags(req.body.tagLatitude, req.body.tagLongitude, radius);
   
-  res.render('index', { taglist: tags})
+  res.render('index', {
+    taglist: tags,
+    tagLatitude: req.body.tagLatitude,
+    tagLongitude: req.body.tagLongitude,
+  })
 });
 
 /**
@@ -97,7 +101,11 @@ router.post('/discovery', (req, res) => {
   let radius = 10;
   let tags = geoTagStore.searchNearbyGeoTags(req.body.discoveryLatitude, req.body.discoveryLongitude, radius, req.body.discoverySearch);
   
-  res.render('index', { taglist: tags})
+  res.render('index', {
+    taglist: tags,
+    discoveryLatitude: req.body.discoveryLatitude,
+    discoveryLongitude: req.body.discoveryLongitude
+  })
 });
 
 module.exports = router;
