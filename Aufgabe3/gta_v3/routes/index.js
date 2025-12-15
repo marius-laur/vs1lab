@@ -30,6 +30,9 @@ const GeoTag = require('../models/geotag');
  */
 // eslint-disable-next-line no-unused-vars
 const GeoTagStore = require('../models/geotag-store');
+const { tagList, fillGeotagStore } = require('../models/geotag-examples');
+const GeoTagExamples = require('../models/geotag-examples');
+const InMemoryGeoTagStore = require('../models/geotag-store');
 
 /**
  * Route '/' for HTTP 'GET' requests.
@@ -42,6 +45,7 @@ const GeoTagStore = require('../models/geotag-store');
 
 // TODO: extend the following route example if necessary
 router.get('/', (req, res) => {
+  consol.console.log('a');
   res.render('index', { taglist: [] })
 });
 
@@ -61,6 +65,15 @@ router.get('/', (req, res) => {
  */
 
 // TODO: ... your code here ...
+const geoTagStore = new InMemoryGeoTagStore();
+
+router.post('/tagging', (req, res) => {
+
+  GeoTagExamples.fillExampleTags(geoTagStore);
+  var tags = geoTagStore.getNearbyGeoTags(49.013790, 8.390071, 0.0015); //TODO: testwerte entfernen, dokument werte nehmen
+  
+  res.render('index', { taglist: tags})
+});
 
 /**
  * Route '/discovery' for HTTP 'POST' requests.
