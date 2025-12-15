@@ -47,7 +47,13 @@ const geoTagStore = new InMemoryGeoTagStore();
 // TODO: extend the following route example if necessary
 router.get('/', (req, res) => {
   GeoTagExamples.fillExampleTags(geoTagStore);
-  res.render('index', { taglist: [] })
+  res.render('index', {
+    taglist: [],
+    tagLatitude: "",
+    tagLongitude: "",
+    discoveryLatitude: "",
+    discoveryLongitude: ""
+  });
 });
 
 /**
@@ -76,6 +82,8 @@ router.post('/tagging', (req, res) => {
     taglist: tags,
     tagLatitude: req.body.tagLatitude,
     tagLongitude: req.body.tagLongitude,
+    discoveryLatitude: req.body.discoveryLatitude,
+    discoveryLongitude: req.body.discoveryLongitude
   })
 });
 
@@ -103,6 +111,8 @@ router.post('/discovery', (req, res) => {
   
   res.render('index', {
     taglist: tags,
+    tagLatitude: req.body.tagLatitude,
+    tagLongitude: req.body.tagLongitude,
     discoveryLatitude: req.body.discoveryLatitude,
     discoveryLongitude: req.body.discoveryLongitude
   })
