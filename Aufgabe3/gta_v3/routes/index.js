@@ -47,13 +47,13 @@ const geoTagStore = new InMemoryGeoTagStore();
 // TODO: extend the following route example if necessary
 router.get('/', (req, res) => {
   GeoTagExamples.fillExampleTags(geoTagStore);
-
+  
   res.render('index', {
     taglist: [],
-    tagLat: req.body.tagLatitude,
-    tagLong: req.body.tagLongitude,
-    disLat: req.body.discoveryLatitude,
-    disLong: req.body.discoveryLongitude
+    tagLatitude: "",
+    tagLongitude: "",
+    discoveryLatitude: "",
+    discoveryLongitude: ""
   });
 });
 
@@ -81,10 +81,10 @@ router.post('/tagging', (req, res) => {
   
   res.render('index', {
     taglist: tags,
-    tagLat: req.body.tagLatitude,
-    tagLong: req.body.tagLongitude,
-    disLat: req.body.discoveryLatitude,
-    disLong: req.body.discoveryLongitude
+    tagLatitude: req.body.tagLatitude,
+    tagLongitude: req.body.tagLongitude,
+    discoveryLatitude: req.body.discoveryLatitude,
+    discoveryLongitude: req.body.discoveryLongitude
   })
 });
 
@@ -112,10 +112,10 @@ router.post('/discovery', (req, res) => {
   
   res.render('index', {
     taglist: tags,
-    tagLat: req.body.tagLatitude,
-    tagLong: req.body.tagLongitude,
-    disLat: req.body.discoveryLatitude,
-    disLong: req.body.discoveryLongitude
+    tagLatitude: req.body.tagLatitude,
+    tagLongitude: req.body.tagLongitude,
+    discoveryLatitude: req.body.discoveryLatitude,
+    discoveryLongitude: req.body.discoveryLongitude
   })
 });
 
