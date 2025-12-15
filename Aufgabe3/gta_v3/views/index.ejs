@@ -57,18 +57,21 @@
                     <label id="tag-latitude-label" for="tag-latitude-input">Latitude</label>
                     <input type="text"
                            id="tag-latitude-input"
+                           name="tagLatitude"
                            value="49.01379"
                            readonly>
 
                     <label id="tag-longitude-label" for="tag-longitude-input">Longitude</label>
                     <input type="text"
                            id="tag-longitude-input"
+                           name="tagLongitude"
                            value="8.404435"
                            readonly>
 
                     <label id="tag-name-label" for="tag-name-input">Name</label>
                     <input type="text"
                            id="tag-name-input"
+                           name="tagName"
                            placeholder="e.g. Koeri-Werk"
                            maxlength="10"
                            required>
@@ -76,6 +79,7 @@
                     <label id="tag-hashtag-label" for="tag-hashtag-input">Hashtag</label>
                     <input type="text"
                            id="tag-hashtag-input"
+                           name="tagHashtag"
                            placeholder="e.g. #essen"
                            pattern="#[A-Za-z]+"
                            maxlength="11">
@@ -100,14 +104,17 @@
 
                     <label id="discovery-search-label" for="discovery-search-input">Search Term</label>
                     <input type="text" 
-                    id="discovery-search-input" 
+                    id="discovery-search-input"
+                    name="discoverySearch" 
                     placeholder="e.g. Hochschule Karlsruhe">
 
                     <input type="hidden" 
-                    id="discovery-latitude-input">
+                    id="discovery-latitude-input"
+                    name="discoveryLatitude">
 
                     <input type="hidden" 
-                    id="discovery-longitude-input">
+                    id="discovery-longitude-input"
+                    name="discoveryLongitude">
 
                     <input type="submit" 
                     id="discovery-search-submit" 

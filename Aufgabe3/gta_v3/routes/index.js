@@ -42,10 +42,11 @@ const InMemoryGeoTagStore = require('../models/geotag-store');
  *
  * As response, the ejs-template is rendered without geotag objects.
  */
+const geoTagStore = new InMemoryGeoTagStore();
 
 // TODO: extend the following route example if necessary
 router.get('/', (req, res) => {
-  consol.console.log('a');
+  GeoTagExamples.fillExampleTags(geoTagStore);
   res.render('index', { taglist: [] })
 });
 
@@ -65,12 +66,11 @@ router.get('/', (req, res) => {
  */
 
 // TODO: ... your code here ...
-const geoTagStore = new InMemoryGeoTagStore();
 
 router.post('/tagging', (req, res) => {
-
-  GeoTagExamples.fillExampleTags(geoTagStore);
-  var tags = geoTagStore.getNearbyGeoTags(49.013790, 8.390071, 0.0015); //TODO: testwerte entfernen, dokument werte nehmen
+  let radius = 10;
+  geoTagStore.addGeoTag(new GeoTag(req.body.tagName, req.body.tagLatitude, req.body.tagLongitude, req.body.tagHashtag));
+  let tags = geoTagStore.getNearbyGeoTags(req.body.tagLatitude, req.body.tagLongitude, radius);
   
   res.render('index', { taglist: tags})
 });
@@ -92,5 +92,12 @@ router.post('/tagging', (req, res) => {
  */
 
 // TODO: ... your code here ...
+
+router.post('/discovery', (req, res) => {
+  let radius = 10;
+  let tags = geoTagStore.searchNearbyGeoTags(req.body.discoveryLatitude, req.body.discoveryLongitude, radius, req.body.discoverySearch);
+  
+  res.render('index', { taglist: tags})
+});
 
 module.exports = router;
