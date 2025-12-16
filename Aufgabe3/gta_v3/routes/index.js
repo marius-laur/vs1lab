@@ -29,10 +29,9 @@ const GeoTag = require('../models/geotag');
  * TODO: implement the module in the file "../models/geotag-store.js"
  */
 // eslint-disable-next-line no-unused-vars
-const GeoTagStore = require('../models/geotag-store');
-const { tagList, fillGeotagStore } = require('../models/geotag-examples');
 const GeoTagExamples = require('../models/geotag-examples');
 const InMemoryGeoTagStore = require('../models/geotag-store');
+const radius = 0.5;
 
 /**
  * Route '/' for HTTP 'GET' requests.
@@ -47,7 +46,14 @@ const geoTagStore = new InMemoryGeoTagStore();
 // TODO: extend the following route example if necessary
 router.get('/', (req, res) => {
   GeoTagExamples.fillExampleTags(geoTagStore);
-  res.render('index', { taglist: [] })
+
+  res.render('index', {
+    taglist: [],
+    tagLat: "",
+    tagLong: "",
+    disLat: "",
+    disLong: ""
+  });
 });
 
 /**
@@ -68,15 +74,21 @@ router.get('/', (req, res) => {
 // TODO: ... your code here ...
 
 router.post('/tagging', (req, res) => {
-  let radius = 10;
-  geoTagStore.addGeoTag(new GeoTag(req.body.tagName, req.body.tagLatitude, req.body.tagLongitude, req.body.tagHashtag));
-  let tags = geoTagStore.getNearbyGeoTags(req.body.tagLatitude, req.body.tagLongitude, radius);
   
-  res.render('index', {
-    taglist: tags,
-    tagLatitude: req.body.tagLatitude,
-    tagLongitude: req.body.tagLongitude,
-  })
+  try {
+    geoTagStore.addGeoTag(new GeoTag(req.body.tagName, req.body.tagLatitude, req.body.tagLongitude, req.body.tagHashtag));
+    let tags = geoTagStore.getNearbyGeoTags(req.body.tagLatitude, req.body.tagLongitude, radius);
+
+    res.render('index', {
+      taglist: tags,
+      tagLat: req.body.tagLatitude,
+      tagLong: req.body.tagLongitude,
+      disLat: req.body.discoveryLatitude,
+      disLong: req.body.discoveryLongitude
+    })
+  } catch (err) {
+    console.error(err.message());
+  }
 });
 
 /**
@@ -98,14 +110,19 @@ router.post('/tagging', (req, res) => {
 // TODO: ... your code here ...
 
 router.post('/discovery', (req, res) => {
-  let radius = 10;
-  let tags = geoTagStore.searchNearbyGeoTags(req.body.discoveryLatitude, req.body.discoveryLongitude, radius, req.body.discoverySearch);
-  
-  res.render('index', {
-    taglist: tags,
-    discoveryLatitude: req.body.discoveryLatitude,
-    discoveryLongitude: req.body.discoveryLongitude
-  })
+  try {
+    let tags = geoTagStore.searchNearbyGeoTags(req.body.discoveryLatitude, req.body.discoveryLongitude, radius, req.body.discoverySearch);
+    
+    res.render('index', {
+      taglist: tags,
+      tagLat: req.body.tagLatitude,
+      tagLong: req.body.tagLongitude,
+      disLat: req.body.discoveryLatitude,
+      disLong: req.body.discoveryLongitude
+    })
+  } catch (err) {
+    console.error(err.message());
+  }
 });
 
 module.exports = router;

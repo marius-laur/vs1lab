@@ -183,11 +183,23 @@ a {
 }
 
 .main .tagging form fieldset #tag-form-submit{
-  border: 0px;
+  border: 2px solid var(--main-color2);
   color: var(--font-color-light);
   font-weight: bold;
-  background: var(--main-color2);
+  background-color: var(--main-color2);
   width: 100%;
+  cursor: pointer;
+
+  transition: background-color 0.25s, color 0.4s;
+}
+
+.main .tagging form fieldset #tag-form-submit:hover{
+  color: var(--main-color2);
+  background-color: var(--font-color-light);
+}
+
+.main .tagging form fieldset #tag-form-submit:active{
+  background-color: var(--main-color2);
 }
 
 /* Styles for Discovery component */
@@ -201,10 +213,22 @@ a {
 }
 
 .main .discovery form fieldset #discovery-search-submit{
-  border: 0px;
+  border: 2px solid var(--main-color2);
   color: var(--font-color-light);
   font-weight: bold;
   background: var(--main-color2);
+  cursor: pointer;
+
+  transition: background-color 0.25s, color 0.4s;
+}
+
+.main .discovery form fieldset #discovery-search-submit:hover{
+  color: var(--main-color2);
+  background-color: var(--font-color-light);
+}
+
+.main .discovery form fieldset #discovery-search-submit:active{
+  background-color: var(--main-color2);
 }
 
 .main .discovery .discovery__wrapper .discovery__taglist .discovery__results{
@@ -234,7 +258,7 @@ a {
 
 .main .discovery .discovery__wrapper #map{
   border-radius: var(--default-border-radius);
-  height: 80vh;
+  height: 60vh;
   min-height: 10px;
 }
 
