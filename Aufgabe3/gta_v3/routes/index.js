@@ -31,7 +31,8 @@ const GeoTag = require('../models/geotag');
 // eslint-disable-next-line no-unused-vars
 const GeoTagExamples = require('../models/geotag-examples');
 const InMemoryGeoTagStore = require('../models/geotag-store');
-const radius = 0.5;
+
+const radius = 10; //in km
 
 /**
  * Route '/' for HTTP 'GET' requests.
