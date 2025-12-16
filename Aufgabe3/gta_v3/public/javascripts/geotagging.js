@@ -17,7 +17,6 @@
  * It is called once the page has been fully loaded.
  */
 function updateLocation() {
-    const mapManager = new MapManager();
     let tagLatitude = document.getElementById("tag-latitude-input");
     let tagLongitude = document.getElementById("tag-longitude-input");
     let discoveryLatitude = document.getElementById("discovery-latitude-input");
@@ -30,7 +29,12 @@ function updateLocation() {
         const latitude = tagCoordsPresent ? tagLatitude.value : discoveryLatitude.value;
         const longitude = tagCoordsPresent ? tagLongitude.value : discoveryLongitude.value;
         
-        updateMap(mapManager, latitude, longitude);
+        tagLatitude.value = latitude;
+        tagLongitude.value = longitude;
+        discoveryLatitude.value = latitude;
+        discoveryLongitude.value = longitude;
+
+        updateMap(latitude, longitude);
 
         return;
     }
@@ -41,11 +45,12 @@ function updateLocation() {
         discoveryLatitude.value = location.latitude;
         discoveryLongitude.value = location.longitude;
         
-        updateMap(mapManager, location.latitude, location.longitude);
+        updateMap(location.latitude, location.longitude);
     });
 }
 
-function updateMap(mapManager, latitude, longitude) {
+function updateMap(latitude, longitude) {
+    const mapManager = new MapManager();
     mapManager.initMap(latitude, longitude);
     
     const mapDiv = document.getElementById("map");
