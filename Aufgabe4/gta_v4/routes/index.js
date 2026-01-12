@@ -25,7 +25,9 @@ const GeoTag = require('../models/geotag');
  * It provides an in-memory store for geotag objects.
  */
 // eslint-disable-next-line no-unused-vars
-const GeoTagStore = require('../models/geotag-store');
+const GeoTagExamples = require('../models/geotag-examples');
+const InMemoryGeoTagStore = require('../models/geotag-store');
+
 
 // App routes (A3)
 
@@ -38,8 +40,19 @@ const GeoTagStore = require('../models/geotag-store');
  * As response, the ejs-template is rendered without geotag objects.
  */
 
+const radius = 10; //in km
+const geoTagStore = new InMemoryGeoTagStore();
+
 router.get('/', (req, res) => {
-  res.render('index', { taglist: [] })
+  GeoTagExamples.fillExampleTags(geoTagStore);
+
+  res.render('index', {
+    taglist: [],
+    tagLat: "",
+    tagLong: "",
+    disLat: "",
+    disLong: ""
+  });
 });
 
 // API routes (A4)
