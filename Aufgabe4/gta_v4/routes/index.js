@@ -120,7 +120,18 @@ router.post('/api/geotags', (req, res) => {
  * The requested tag is rendered as JSON in the response.
  */
 
-// TODO: ... your code here ...
+router.get('/api/geotags/:id"', (req, res) => {
+  
+  try {    
+    let id = req.params.id;
+    let tag = geoTagStore.searchGeoTagById(id);
+
+    res.json(JSON.stringify(tag));
+
+  } catch (err) {
+    console.error(err.message());
+  }
+});
 
 
 /**
@@ -137,8 +148,18 @@ router.post('/api/geotags', (req, res) => {
  * The updated resource is rendered as JSON in the response. 
  */
 
-// TODO: ... your code here ...
+router.put('/api/geotags/:id"', (req, res) => {
+  
+  try {    
+    let id = req.params.id;
+    let tag = geoTagStore.getGeoTagById(id);
 
+    //res.json(JSON.stringify(tag));
+
+  } catch (err) {
+    console.error(err.message());
+  }
+});
 
 /**
  * Route '/api/geotags/:id' for HTTP 'DELETE' requests.
@@ -151,6 +172,15 @@ router.post('/api/geotags', (req, res) => {
  * The deleted resource is rendered as JSON in the response.
  */
 
-// TODO: ... your code here ...
+router.delete('/api/geotags/:id"', (req, res) => {
+  
+  try {    
+    let id = req.params.id;
+    geoTagStore.removeGeoTagById(id);
+
+  } catch (err) {
+    console.error(err.message());
+  }
+});
 
 module.exports = router;
