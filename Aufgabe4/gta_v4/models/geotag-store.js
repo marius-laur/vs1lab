@@ -28,7 +28,6 @@ const GeoTag = require("./geotag");
 class InMemoryGeoTagStore {
     #geotags;
 
-    // TODO: ... your code here ...
     constructor() {
         this.#geotags = [];
     }

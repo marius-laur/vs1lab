@@ -69,8 +69,21 @@ router.get('/', (req, res) => {
  * If 'latitude' and 'longitude' are available, it will be further filtered based on radius.
  */
 
-// TODO: ... your code here ...
+router.get('/api/geotags', (req, res) => {
+  
+  try {
+    let geoTags = geoTagStore.getNearbyGeoTags(req.body.tagLatitude, req.body.tagLongitude, radius);
+    
+    if (req.query) {
+      geoTags = geoTagStore.searchNearbyGeoTags(req.body.tagLatitude, req.body.tagLongitude, radius, req.query);
+    }
 
+    res.json(JSON.stringify(geoTags));
+
+  } catch (err) {
+    console.error(err.message());
+  }
+});
 
 /**
  * Route '/api/geotags' for HTTP 'POST' requests.
@@ -83,8 +96,19 @@ router.get('/', (req, res) => {
  * The new resource is rendered as JSON in the response.
  */
 
-// TODO: ... your code here ...
+router.post('/api/geotags', (req, res) => {
+  
+  try {
+    let geoTag = new GeoTag(req.body.tagName, req.body.tagLatitude, req.body.tagLongitude, req.body.tagHashtag);
+    geoTagStore.addGeoTag(geoTag);
 
+    res.location('/api/geotags/' + geoTag.id);
+    res.json(JSON.stringify(geoTag));
+
+  } catch (err) {
+    console.error(err.message());
+  }
+});
 
 /**
  * Route '/api/geotags/:id' for HTTP 'GET' requests.
