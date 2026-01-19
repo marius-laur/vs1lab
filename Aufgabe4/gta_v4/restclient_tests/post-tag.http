@@ -1,0 +1,9 @@
+POST http://localhost:3000/api/geotags
+Content-Type: application/json
+
+{
+  "tagName": "Test Ort",
+  "tagLatitude": 42.129145,
+  "tagLongitude": 11.60333,
+  "tagHashtag": "#park"
+}

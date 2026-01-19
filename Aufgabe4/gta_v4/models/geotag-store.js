@@ -28,7 +28,6 @@ const GeoTag = require("./geotag");
 class InMemoryGeoTagStore {
     #geotags;
 
-    // TODO: ... your code here ...
     constructor() {
         this.#geotags = [];
     }
@@ -125,6 +124,37 @@ class InMemoryGeoTagStore {
             tag.name.toLowerCase().includes(keyword) ||
             tag.hashtag.toLowerCase().includes(keyword)
         );
+    }
+
+    /**
+     * Returns a geotag by id
+     *
+     * @param {number} id   unique of the geotag
+     * @returns {GeoTag} geotag
+     */
+    getGeoTagById(id) {
+    
+        for (let i = 0; i < this.#geotags.length; i++) {
+            if (id === this.#geotags[i].id) {
+                return this.#geotags[i];
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Removes a geotag by id
+     *
+     * @param {number} id   unique of the geotag
+     */
+    removeGeoTagById(id) {
+    
+        for (let i = 0; i < this.#geotags.length; i++) {
+            if (id === this.#geotags[i].id) {
+                this.#geotags.splice(i, 1);
+                break;
+            }
+        }
     }
 
     /**
