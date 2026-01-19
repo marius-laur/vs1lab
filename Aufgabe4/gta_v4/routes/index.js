@@ -72,16 +72,21 @@ router.get('/', (req, res) => {
 router.get('/api/geotags', (req, res) => {
   
   try {
-    let geoTags = geoTagStore.getNearbyGeoTags(req.body.tagLatitude, req.body.tagLongitude, radius);
+    let lat = req.query.lat;
+    let lng = req.query.lng;
+    let rad = req.query.rad;
     
-    if (req.query) {
-      geoTags = geoTagStore.searchNearbyGeoTags(req.body.tagLatitude, req.body.tagLongitude, radius, req.query);
+    let geoTags = geoTagStore.getNearbyGeoTags(lat, lng, rad);
+    
+    if (req.query.s) {
+      let search = req.query.s;
+      geoTags = geoTagStore.searchNearbyGeoTags(lat, lng, rad, search);
     }
 
-    res.json(JSON.stringify(geoTags));
+    res.json(geoTags);
 
   } catch (err) {
-    console.error(err.message());
+    res.status(500).send("ERROR: " + err.message);
   }
 });
 
@@ -99,14 +104,13 @@ router.get('/api/geotags', (req, res) => {
 router.post('/api/geotags', (req, res) => {
   
   try {
-    let geoTag = new GeoTag(req.body.tagName, req.body.tagLatitude, req.body.tagLongitude, req.body.tagHashtag);
-    geoTagStore.addGeoTag(geoTag);
+    let tag = new GeoTag(req.body.tagName, req.body.tagLatitude, req.body.tagLongitude, req.body.tagHashtag);
+    geoTagStore.addGeoTag(tag);
 
-    res.location('/api/geotags/' + geoTag.id);
-    res.json(JSON.stringify(geoTag));
+    res.status(201).location('/api/geotags/' + tag.id).json(tag);
 
   } catch (err) {
-    console.error(err.message());
+    res.status(500).send("ERROR: " + err.message);
   }
 });
 
@@ -120,16 +124,17 @@ router.post('/api/geotags', (req, res) => {
  * The requested tag is rendered as JSON in the response.
  */
 
-router.get('/api/geotags/:id"', (req, res) => {
+router.get('/api/geotags/:id', (req, res) => {
   
   try {    
-    let id = req.params.id;
-    let tag = geoTagStore.searchGeoTagById(id);
+    let id = parseInt(req.params.id, 10);
+    let tag = geoTagStore.getGeoTagById(id);
 
-    res.json(JSON.stringify(tag));
+    res.json(tag);
 
   } catch (err) {
-    console.error(err.message());
+    console.error(err); // im Terminal sehen
+    res.status(500).send("ERROR: " + err.message);
   }
 });
 
@@ -148,16 +153,23 @@ router.get('/api/geotags/:id"', (req, res) => {
  * The updated resource is rendered as JSON in the response. 
  */
 
-router.put('/api/geotags/:id"', (req, res) => {
+router.put('/api/geotags/:id', (req, res) => {
   
   try {    
-    let id = req.params.id;
+    let id = parseInt(req.params.id, 10);
     let tag = geoTagStore.getGeoTagById(id);
 
-    //res.json(JSON.stringify(tag));
+    tag.name = req.body.tagName;
+    tag.latitude = req.body.tagLatitude;
+    tag.longitude = req.body.tagLongitude;
+    tag.hashtag = req.body.tagHashtag;
+
+    tag = geoTagStore.getGeoTagById(id);
+
+    res.json(tag);
 
   } catch (err) {
-    console.error(err.message());
+    res.status(500).send("ERROR: " + err.message);
   }
 });
 
@@ -172,14 +184,14 @@ router.put('/api/geotags/:id"', (req, res) => {
  * The deleted resource is rendered as JSON in the response.
  */
 
-router.delete('/api/geotags/:id"', (req, res) => {
+router.delete('/api/geotags/:id', (req, res) => {
   
   try {    
-    let id = req.params.id;
+    let id = parseInt(req.params.id, 10);
     geoTagStore.removeGeoTagById(id);
 
   } catch (err) {
-    console.error(err.message());
+    res.status(500).send("ERROR: " + err.message);
   }
 });
 

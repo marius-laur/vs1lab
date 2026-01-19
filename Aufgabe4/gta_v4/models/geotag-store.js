@@ -152,6 +152,7 @@ class InMemoryGeoTagStore {
         for (let i = 0; i < this.#geotags.length; i++) {
             if (id === this.#geotags[i].id) {
                 this.#geotags.splice(i, 1);
+                break;
             }
         }
     }

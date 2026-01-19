@@ -17,7 +17,7 @@ class GeoTag {
         this.latitude = latitude;
         this.longitude = longitude;
         this.hashtag = hashtag;
-        this.id++;
+        this.id = GeoTag.id++;
     }    
 }
 

@@ -1,0 +1,9 @@
+PUT http://localhost:3000/api/geotags/4
+Content-Type: application/json
+
+{
+  "tagName": "Evil Test Ort",
+  "tagLatitude": 666.666333,
+  "tagLongitude": 0.000000,
+  "tagHashtag": "#pork"
+}
