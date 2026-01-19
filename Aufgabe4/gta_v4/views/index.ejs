@@ -96,7 +96,7 @@
             <h2 class="discovery__title">Discovery</h2>
 
             <!-- ############### Discovery Form -->
-            <form id="discovery-form">
+            <form class="discovery__search" id="discovery-form" action="/discovery" method="post">
 
                 <fieldset id="discovery-fieldset">
                     <legend id="discovery-legend">Search</legend>
@@ -131,9 +131,14 @@
                         <legend id="discovery-results-legend">Results</legend>
                         <ul class="discovery__results"
                             id="discoveryResults">
-                            <% if (taglist !== undefined) taglist.forEach(function(gtag) { %>
-                                <li><%= gtag.name %> ( <%= gtag.latitude %>,<%= gtag.longitude %>) <%= gtag.hashtag %> </li>
-                            <% }); %>
+                        <% if (taglist && taglist.length > 0) { %>
+                            <% for(let i = 0; i < taglist.length; i++) { %>
+                                <li>
+                                    <%= taglist[i].name %> ( <%= taglist[i].latitude %>, <%= taglist[i].longitude %> )
+                                    <%= taglist[i].hashtag %>
+                                </li>
+                            <% } %>
+                        <% } %>
                         </ul>
                     </fieldset>
                 </div>
