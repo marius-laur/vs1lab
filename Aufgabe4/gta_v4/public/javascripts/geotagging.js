@@ -72,4 +72,17 @@ function updateMap(latitude, longitude) {
 // Execute this function automatically after loading the page
 document.addEventListener("DOMContentLoaded", () => {
     updateLocation();
+
+    let tagform = document.getElementById("tag-form");
+    let discoveryform = document.getElementById("discovery-form");
+
+    tagform.addEventListener("submit", (event) => {
+        event.preventDefault();
+        alert("aaaaaaaa");
+    }, true)
+
+    discoveryform.addEventListener("submit", (event) => {
+        event.preventDefault();
+        alert("bbbbbbbb");
+    }, true)
 });
