@@ -4,14 +4,6 @@
 
 // This script is executed when the browser loads index.html
 
-/* logging copy paste
-    console.log("---------- updated");
-    console.log(tagLatitude.value);
-    console.log(tagLongitude.value);
-    console.log(discoveryLatitude.value);
-    console.log(discoveryLongitude.value);
-*/
-
 /**
  * A function to retrieve the current location and update the page.
  * It is called once the page has been fully loaded.
@@ -100,16 +92,56 @@ function updateDiscoveryUI(tags, lat, lng) {
     updateMap(lat, lng, tags);
 }
 
-// AJAX
+// Execute this function automatically after loading the page
+document.addEventListener("DOMContentLoaded", () => {
+    updateLocation();
+
+    const tagform = document.getElementById("tag-form");
+    const discoveryform = document.getElementById("discovery-form");
+
+    tagform.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        try {
+            let tagName = document.getElementById("tag-name-input").value;
+            let tagLat = parseFloat(document.getElementById("tag-latitude-input").value);
+            let tagLng = parseFloat(document.getElementById("tag-longitude-input").value);
+            let tagHashtag = document.getElementById("tag-hashtag-input").value;
+            
+            let tag = new GeoTag(tagName, tagLat, tagLng, tagHashtag);
+        
+            await postGeoTag(tag);
+            await runDiscovery();
+        } catch (e) {
+            alert(e.message);
+        }
+    });
+
+    discoveryform.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        try { 
+            await runDiscovery(); 
+        } catch (e) { 
+            alert(e.message); 
+        }
+    });
+});
+
 async function postGeoTag(tag) {
     const res = await fetch("/api/geotags", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(tag)
     });
+}
 
-    if (!res.ok) throw new Error("POST failed");
-    return await res.json();
+async function runDiscovery() {
+    const search = document.getElementById("discovery-search-input").value;
+    const lat = parseFloat(document.getElementById("discovery-latitude-input").value);
+    const lng = parseFloat(document.getElementById("discovery-longitude-input").value);
+
+    const tags = await getGeoTags(lat, lng, search);
+    updateDiscoveryUI(tags, lat, lng);
 }
 
 async function getGeoTags(lat, lng, search) {
@@ -124,70 +156,15 @@ async function getGeoTags(lat, lng, search) {
     }
 
     const res = await fetch("/api/geotags?" + params.toString());
-    if (!res.ok) throw new Error("GET failed");
-    return await res.json();
+    return res.json();
 }
 
-
-// Execute this function automatically after loading the page
-document.addEventListener("DOMContentLoaded", () => {
-    updateLocation();
-
-    const tagform = document.getElementById("tag-form");
-    const discoveryform = document.getElementById("discoveryFilterForm");
-
-    tagform.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        if (!tagform.checkValidity()) {
-            tagform.reportValidity();
-            return;
-        }
-
-        const tag = {
-            tagName: document.getElementById("tag-name-input").value,
-            tagLatitude: parseFloat(document.getElementById("tag-latitude-input").value),
-            tagLongitude: parseFloat(document.getElementById("tag-longitude-input").value),
-            tagHashtag: document.getElementById("tag-hashtag-input").value,
-
-            name: document.getElementById("tag-name-input").value,
-            latitude: parseFloat(document.getElementById("tag-latitude-input").value),
-            longitude: parseFloat(document.getElementById("tag-longitude-input").value),
-            hashtag: document.getElementById("tag-hashtag-input").value
-        };
-
-        try {
-            await postGeoTag(tag);
-            await runDiscovery();
-            document.getElementById("tag-name-input").value = "";
-            document.getElementById("tag-hashtag-input").value = "";
-        } catch (e) {
-            alert(e.message);
-        }
-    });
-
-    discoveryform.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        if (!discoveryform.checkValidity()) {
-            discoveryform.reportValidity();
-            return;
-        }
-
-        try { 
-            await runDiscovery(); 
-        } catch (e) { 
-            alert(e.message); 
-        }
-    });
-});
-
-async function runDiscovery() {
-    const search = document.getElementById("discovery-search-input").value;
-    const lat = parseFloat(document.getElementById("discovery-latitude-input").value);
-    const lng = parseFloat(document.getElementById("discovery-longitude-input").value);
-
-
-    const tags = await getGeoTags(lat, lng, search);
-    updateDiscoveryUI(tags, lat, lng);
+//GeoTags Constuctor
+class GeoTag {
+    constructor(tagName, tagLatitude, tagLongitude, tagHashtag) {
+        this.tagName = tagName;
+        this.tagLatitude = tagLatitude;
+        this.tagLongitude = tagLongitude;
+        this.tagHashtag = tagHashtag;
+    }
 }
