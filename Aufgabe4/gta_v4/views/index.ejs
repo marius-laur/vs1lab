@@ -24,11 +24,10 @@
 
 <body>
     <header class="header row">
-        <div class="header-elements col-4"
-             id="header-image-container">
-            <img src="./images/location.png"
-                id="header-image"
-                alt="an image of a map and location">
+        <div class="header-elements col-4" id="header-image-container">
+            <a href="/">
+                <img src="./images/location.png" id="header-image" alt="an image of a map and location">
+            </a>
         </div>
         <div class="header-elements col-4" id="header-title-container">
             <h1 id="header-title">GeoTagApp</h1>
@@ -96,7 +95,7 @@
             <h2 class="discovery__title">Discovery</h2>
 
             <!-- ############### Discovery Form -->
-            <form id="discovery-form">
+            <form class="discovery__search" id="discovery-form" action="/discovery" method="post">
 
                 <fieldset id="discovery-fieldset">
                     <legend id="discovery-legend">Search</legend>
@@ -131,10 +130,24 @@
                         <legend id="discovery-results-legend">Results</legend>
                         <ul class="discovery__results"
                             id="discoveryResults">
-                            <% if (taglist !== undefined) taglist.forEach(function(gtag) { %>
-                                <li><%= gtag.name %> ( <%= gtag.latitude %>,<%= gtag.longitude %>) <%= gtag.hashtag %> </li>
-                            <% }); %>
+                        <% if (taglist && taglist.length > 0) { %>
+                            <% for(let i = 0; i < taglist.length; i++) { %>
+                                <li>
+                                    <%= taglist[i].name %> ( <%= taglist[i].latitude %>, <%= taglist[i].longitude %> )
+                                    <%= taglist[i].hashtag %>
+                                </li>
+                            <% } %>
+                        <% } %>
                         </ul>
+
+                <div class="discovery_nav">
+                    <div class="discovery_nav_item">
+                        <button type="button" id="discovery-nav-left"><</button> 
+                        <button type="button" id="discovery-nav-right">></button> 
+                    </div>
+                    <p class="discovery_nav_item" id="page-number">1</p>
+                </div>
+
                     </fieldset>
                 </div>
 
