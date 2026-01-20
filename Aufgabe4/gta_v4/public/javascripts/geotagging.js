@@ -8,9 +8,12 @@
  * A function to retrieve the current location and update the page.
  * It is called once the page has been fully loaded.
  */
+const DEFAULT_ELEMENTS_PER_PAGE = 5;
+const DEFAULT_RADIUS = 10;
 let mapManager = null;
 let mapInitialized = false;
-const DEFAULT_RADIUS = 10;
+let currentPage = 0;
+let currentTagListLength = 0;
 
 function updateLocation() {
     let tagLatitude = document.getElementById("tag-latitude-input");
@@ -88,6 +91,12 @@ function updateDiscoveryUI(tags, lat, lng) {
         ul.appendChild(li);
     });
 
+    try {
+        document.getElementById("page-number").textContent = (currentPage + 1);
+    } catch (err) {
+        alert(err.message)
+    }
+
     setTagsToMap(tags);
     updateMap(lat, lng, tags);
 }
@@ -98,6 +107,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const tagform = document.getElementById("tag-form");
     const discoveryform = document.getElementById("discovery-form");
+    const pageLeftButton = document.getElementById("discovery-nav-left");
+    const pageRightButton = document.getElementById("discovery-nav-right");
 
     tagform.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -118,14 +129,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
     discoveryform.addEventListener("submit", async (event) => {
         event.preventDefault();
-
+        currentPage = 0;
         try { 
             await runDiscovery(); 
         } catch (e) { 
             alert(e.message); 
         }
     });
+
+    pageLeftButton.addEventListener("click", () => {
+        if (currentPage > 0) {
+            currentPage--;
+            runDiscovery();
+        }
+    });
+
+    pageRightButton.addEventListener("click", () => {
+        if (currentTagListLength >= DEFAULT_ELEMENTS_PER_PAGE) {
+            currentPage++;
+            runDiscovery();
+        }
+    });
 });
+
+async function runDiscovery() {
+    const search = document.getElementById("discovery-search-input").value;
+    const lat = parseFloat(document.getElementById("discovery-latitude-input").value);
+    const lng = parseFloat(document.getElementById("discovery-longitude-input").value);
+
+    const result = await getGeoTags(lat, lng, currentPage, search);
+    currentTagListLength = result.tags.length;
+    updateDiscoveryUI(result.tags, lat, lng);
+}
 
 async function postGeoTag(tag) {
     const res = await fetch("/api/geotags", {
@@ -133,22 +168,16 @@ async function postGeoTag(tag) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(tag)
     });
+    return res.json();
 }
 
-async function runDiscovery() {
-    const search = document.getElementById("discovery-search-input").value;
-    const lat = parseFloat(document.getElementById("discovery-latitude-input").value);
-    const lng = parseFloat(document.getElementById("discovery-longitude-input").value);
-
-    const tags = await getGeoTags(lat, lng, search);
-    updateDiscoveryUI(tags, lat, lng);
-}
-
-async function getGeoTags(lat, lng, search) {
+async function getGeoTags(lat, lng, page, search) {
     const params = new URLSearchParams({
         lat: lat,
         lng: lng,
-        rad: DEFAULT_RADIUS
+        rad: DEFAULT_RADIUS,
+        page: page,
+        elementsPerPage: DEFAULT_ELEMENTS_PER_PAGE
     });
 
     if (search && search.trim() !== "") {

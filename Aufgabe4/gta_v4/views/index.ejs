@@ -24,11 +24,10 @@
 
 <body>
     <header class="header row">
-        <div class="header-elements col-4"
-             id="header-image-container">
-            <img src="./images/location.png"
-                id="header-image"
-                alt="an image of a map and location">
+        <div class="header-elements col-4" id="header-image-container">
+            <a href="/">
+                <img src="./images/location.png" id="header-image" alt="an image of a map and location">
+            </a>
         </div>
         <div class="header-elements col-4" id="header-title-container">
             <h1 id="header-title">GeoTagApp</h1>
@@ -140,6 +139,15 @@
                             <% } %>
                         <% } %>
                         </ul>
+
+                <div class="discovery_nav">
+                    <div class="discovery_nav_item">
+                        <button type="button" id="discovery-nav-left"><</button> 
+                        <button type="button" id="discovery-nav-right">></button> 
+                    </div>
+                    <p class="discovery_nav_item" id="page-number">1</p>
+                </div>
+
                     </fieldset>
                 </div>
 

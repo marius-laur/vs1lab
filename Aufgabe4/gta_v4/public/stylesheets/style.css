@@ -273,6 +273,43 @@ a {
   color: var(--gray-color);
 }
 
+.main .discovery .discovery__wrapper .discovery_nav{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.main .discovery .discovery__wrapper button{
+  padding: 5px;
+  color: var(--font-color-light);
+  background-color: var(--main-color2);
+  font-weight: bold;
+  font-size: larger;
+  border: 2px solid var(--main-color2);
+  border-radius: var(--default-border-radius);
+
+  transition: background-color 0.25s, color 0.4s;
+}
+
+.main .discovery .discovery__wrapper p{
+  padding: 5px;
+  color: var(--font-color-light);
+  background-color: var(--main-color2);
+  font-weight: bold;
+  font-size: larger;
+  border: 2px solid var(--main-color2);
+  border-radius: var(--default-border-radius);
+}
+
+.main .discovery .discovery__wrapper button:hover{
+  color: var(--main-color2);
+  background-color: var(--font-color-light);
+}
+
+.main .discovery .discovery__wrapper button:active{
+  background-color: var(--main-color2);
+}
+
 /* Styles for Footer Component */
 
 .footer{

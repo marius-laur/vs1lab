@@ -40,7 +40,6 @@ const InMemoryGeoTagStore = require('../models/geotag-store');
  * As response, the ejs-template is rendered without geotag objects.
  */
 
-const radius = 10; //in km
 const geoTagStore = new InMemoryGeoTagStore();
 
 router.get('/', (req, res) => {
@@ -72,18 +71,28 @@ router.get('/', (req, res) => {
 router.get('/api/geotags', (req, res) => {
   
   try {
-    let lat = req.query.lat;
-    let lng = req.query.lng;
-    let rad = req.query.rad;
+    let lat = parseFloat(req.query.lat);
+    let lng = parseFloat(req.query.lng);
+    let rad = parseFloat(req.query.rad);
+    let page = parseInt(req.query.page);
+    let elementsPerPage = parseInt(req.query.elementsPerPage);
     
     let geoTags = geoTagStore.getNearbyGeoTags(lat, lng, rad);
-    
+
     if (req.query.s) {
-      let search = req.query.s;
-      geoTags = geoTagStore.searchNearbyGeoTags(lat, lng, rad, search);
+      geoTags = geoTagStore.searchNearbyGeoTags(lat, lng, rad, req.query.s);
     }
 
-    res.json(geoTags);
+    let start = page * elementsPerPage;
+    let end = start + elementsPerPage;
+
+    let pagedTags = geoTags.slice(start, end);
+
+    res.json({
+      page,
+      elementsPerPage,
+      tags: pagedTags
+    });
 
   } catch (err) {
     res.status(500).send("ERROR: " + err.message);
