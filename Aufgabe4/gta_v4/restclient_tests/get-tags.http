@@ -1,3 +1,4 @@
 //get http://localhost:3000/
 //GET http://localhost:3000/api/geotags?lat=48.153&lng=11.553&rad=10&s=park
-GET http://localhost:3000/api/geotags/4
+//GET http://localhost:3000/api/geotags/4
+GET http://localhost:3000/api/geotags?lat=49.01552&lng=8.38986&rad=10&page=2&elementsPerPage=5
