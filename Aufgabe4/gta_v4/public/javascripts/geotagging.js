@@ -105,6 +105,12 @@ function updateDiscoveryUI(tags, lat, lng) {
 document.addEventListener("DOMContentLoaded", () => {
     updateLocation();
 
+    const widgetId = turnstile.render("#turnstile-container", {
+        sitekey: "0x4AAAAAADqbk18-UKJt9ccg",
+        theme: "dark",
+        size: "normal",
+    });
+
     const tagform = document.getElementById("tag-form");
     const discoveryform = document.getElementById("discovery-form");
     const pageLeftButton = document.getElementById("discovery-nav-left");
@@ -117,13 +123,17 @@ document.addEventListener("DOMContentLoaded", () => {
             let tagLat = parseFloat(document.getElementById("tag-latitude-input").value);
             let tagLng = parseFloat(document.getElementById("tag-longitude-input").value);
             let tagHashtag = document.getElementById("tag-hashtag-input").value;
-            
             let tag = new GeoTag(tagName, tagLat, tagLng, tagHashtag);
-        
-            await postGeoTag(tag);
+
+            if (turnstile.isExpired(widgetId)) {
+              turnstile.reset(widgetId);
+            }
+            const responseToken = turnstile.getResponse(widgetId);
+            
+            await postGeoTag(tag, responseToken);
             await runDiscovery();
         } catch (e) {
-            alert(e.message);
+            console.log(e.message);
         }
     });
 
@@ -162,11 +172,14 @@ async function runDiscovery() {
     updateDiscoveryUI(result.tags, lat, lng);
 }
 
-async function postGeoTag(tag) {
+async function postGeoTag(tag, token) {
     const res = await fetch("/api/geotags", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(tag)
+        headers: { "Content-Type": "application/json" ,},
+        body:  JSON.stringify({
+            tag,
+            "cf-turnstile-response": token
+        })
     });
     return res.json();
 }

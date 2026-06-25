@@ -139,7 +139,6 @@ a {
 /* Styles for Main Component */
 
 .main{
-  display: flex;
   width: 100%;
   padding: 30px 2%;
   gap: 25px;
@@ -200,6 +199,19 @@ a {
 
 .main .tagging form fieldset #tag-form-submit:active{
   background-color: var(--main-color2);
+}
+
+.turnstile-wrapper {
+  display: block;
+  width: 100%;
+  padding: 10px 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  font: 14px "Trebuchet MS", Helvetica, sans-serif;
+  background-color: var(--font-color-dark);
+
+  border: solid 1px var(--font-color-dark);
+  border-radius: var(--default-border-radius);
 }
 
 /* Styles for Discovery component */
