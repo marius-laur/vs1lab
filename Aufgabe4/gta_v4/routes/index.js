@@ -27,7 +27,7 @@ const GeoTag = require('../models/geotag');
 // eslint-disable-next-line no-unused-vars
 const GeoTagExamples = require('../models/geotag-examples');
 const InMemoryGeoTagStore = require('../models/geotag-store');
-
+const cloudflareSecretToken = "0x4AAAAAADqbkxLXrV_oXThPrHIrmW27lC0"
 
 // App routes (A3)
 
@@ -83,6 +83,8 @@ router.get('/api/geotags', (req, res) => {
       geoTags = geoTagStore.searchNearbyGeoTags(lat, lng, rad, req.query.s);
     }
 
+    let totalPages = Math.trunc(geoTags.length / elementsPerPage) + 1;
+
     let start = page * elementsPerPage;
     let end = start + elementsPerPage;
 
@@ -90,6 +92,7 @@ router.get('/api/geotags', (req, res) => {
 
     res.json({
       page,
+      totalPages,
       elementsPerPage,
       tags: pagedTags
     });
@@ -110,16 +113,31 @@ router.get('/api/geotags', (req, res) => {
  * The new resource is rendered as JSON in the response.
  */
 
-router.post('/api/geotags', (req, res) => {
-  
+router.post('/api/geotags', async (req, res) => {
   try {
-    let tag = new GeoTag(req.body.tagName, req.body.tagLatitude, req.body.tagLongitude, req.body.tagHashtag);
-    geoTagStore.addGeoTag(tag);
+    const token = req.body["cf-turnstile-response"];
+    const ip = req.headers["CF-Connecting-IP"] || req.headers["X-Forwarded-For"] || "unknown";
+    console.log("post from ip: " + ip)
 
+    const validation = await validateTurnstile(token, ip);
+
+    if (validation.success) {
+      console.log("Valid submission from:", validation.hostname);
+
+    } else {
+      console.log("Invalid token:", validation["error-codes"]);
+      res.status(400).send("ERROR: " + "Invalid verification!");
+      return
+    }
+
+    let tag = new GeoTag(req.body.tag.tagName, req.body.tag.tagLatitude, req.body.tag.tagLongitude, req.body.tag.tagHashtag);
+    geoTagStore.addGeoTag(tag);
     res.status(201).location('/api/geotags/' + tag.id).json(tag);
 
   } catch (err) {
-    res.status(500).send("ERROR: " + err.message);
+    let errMsg = "ERROR: " + err.messageM
+    console.log(errMsg)
+    res.status(500).send(errMsg);
   }
 });
 
@@ -192,7 +210,6 @@ router.put('/api/geotags/:id', (req, res) => {
  * Deletes the tag with the corresponding ID.
  * The deleted resource is rendered as JSON in the response.
  */
-
 router.delete('/api/geotags/:id', (req, res) => {
   
   try {    
@@ -205,3 +222,35 @@ router.delete('/api/geotags/:id', (req, res) => {
 });
 
 module.exports = router;
+
+/**
+ * Cloudflare's Turnstile verification
+ * 
+ * @param {token} token
+ * @param {remoteip} remoteip 
+ * @returns success of failure and additional data
+ */
+async function validateTurnstile(token, remoteip) {
+  try {
+    const response = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          secret: cloudflareSecretToken,
+          response: token,
+          remoteip: remoteip,
+        }),
+      },
+    );
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Turnstile validation error:", error);
+    return { success: false, "error-codes": ["internal-error"] };
+  }
+}

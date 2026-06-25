@@ -17,6 +17,8 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
             crossorigin=""></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+            defer></script>
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
@@ -69,7 +71,6 @@
                     <label id="tag-name-label" for="tag-name-input">Name</label>
                     <input type="text"
                            id="tag-name-input"
-                           name="tagName"
                            placeholder="e.g. Koeri-Werk"
                            maxlength="10"
                            required>
@@ -77,17 +78,19 @@
                     <label id="tag-hashtag-label" for="tag-hashtag-input">Hashtag</label>
                     <input type="text"
                            id="tag-hashtag-input"
-                           name="tagHashtag"
                            placeholder="e.g. #essen"
                            pattern="#[A-Za-z]+"
                            maxlength="11">
 
+                    <div class="turnstile-wrapper">
+                        <div id="turnstile-container"></div>
+                    </div>
+                    
                     <input type="submit"
                            id="tag-form-submit"
                            value="Create Tag">
 
                 </fieldset>
-
             </form>
         </section>
 
@@ -145,7 +148,7 @@
                         <button type="button" id="discovery-nav-left"><</button> 
                         <button type="button" id="discovery-nav-right">></button> 
                     </div>
-                    <p class="discovery_nav_item" id="page-number">1</p>
+                    <p class="discovery_nav_item" id="page-number">1/1</p>
                 </div>
 
                     </fieldset>
@@ -163,6 +166,20 @@
     </footer>
 
     <!-- Load JavaScripts -->
+    <script>      
+        function onSuccess(token) {
+            console.log('Challenge Success:', token);
+        }
+        function onError(errorCode) {
+            console.log('Challenge Error:', errorCode);
+        }
+        function onExpired() {
+            console.log('Token expired');
+        }
+        function onTimeout() {
+            console.log('Challenge timed out');
+        }
+    </script>
     <script src="./javascripts/location-helper.js"></script>
     <script src="./javascripts/map-manager.js"></script>
     <script src="./javascripts/geotagging.js"></script>

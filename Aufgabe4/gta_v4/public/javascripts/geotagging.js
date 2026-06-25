@@ -81,9 +81,11 @@ function setTagsToMap(tags) {
 }
 
 
-function updateDiscoveryUI(tags, lat, lng) {
+function updateDiscoveryUI(getTagsResponse, lat, lng) {
     const ul = document.getElementById("discoveryResults");
     ul.innerHTML = "";
+
+    let tags = getTagsResponse.tags;
 
     tags.forEach(tag => {
         const li = document.createElement("li");
@@ -92,7 +94,7 @@ function updateDiscoveryUI(tags, lat, lng) {
     });
 
     try {
-        document.getElementById("page-number").textContent = (currentPage + 1);
+        document.getElementById("page-number").textContent = ((currentPage + 1) + "/" + (getTagsResponse.totalPages));
     } catch (err) {
         alert(err.message)
     }
@@ -104,6 +106,12 @@ function updateDiscoveryUI(tags, lat, lng) {
 // Execute this function automatically after loading the page
 document.addEventListener("DOMContentLoaded", () => {
     updateLocation();
+
+    const widgetId = turnstile.render("#turnstile-container", {
+        sitekey: "0x4AAAAAADqbk18-UKJt9ccg",
+        theme: "dark",
+        size: "normal",
+    });
 
     const tagform = document.getElementById("tag-form");
     const discoveryform = document.getElementById("discovery-form");
@@ -117,13 +125,17 @@ document.addEventListener("DOMContentLoaded", () => {
             let tagLat = parseFloat(document.getElementById("tag-latitude-input").value);
             let tagLng = parseFloat(document.getElementById("tag-longitude-input").value);
             let tagHashtag = document.getElementById("tag-hashtag-input").value;
-            
             let tag = new GeoTag(tagName, tagLat, tagLng, tagHashtag);
-        
-            await postGeoTag(tag);
+
+            if (turnstile.isExpired(widgetId)) {
+              turnstile.reset(widgetId);
+            }
+            const responseToken = turnstile.getResponse(widgetId);
+            
+            await postGeoTag(tag, responseToken);
             await runDiscovery();
         } catch (e) {
-            alert(e.message);
+            console.log(e.message);
         }
     });
 
@@ -159,14 +171,17 @@ async function runDiscovery() {
 
     const result = await getGeoTags(lat, lng, currentPage, search);
     currentTagListLength = result.tags.length;
-    updateDiscoveryUI(result.tags, lat, lng);
+    updateDiscoveryUI(result, lat, lng);
 }
 
-async function postGeoTag(tag) {
+async function postGeoTag(tag, token) {
     const res = await fetch("/api/geotags", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(tag)
+        headers: { "Content-Type": "application/json" ,},
+        body:  JSON.stringify({
+            tag,
+            "cf-turnstile-response": token
+        })
     });
     return res.json();
 }
