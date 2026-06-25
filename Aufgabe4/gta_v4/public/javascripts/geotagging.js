@@ -81,9 +81,11 @@ function setTagsToMap(tags) {
 }
 
 
-function updateDiscoveryUI(tags, lat, lng) {
+function updateDiscoveryUI(getTagsResponse, lat, lng) {
     const ul = document.getElementById("discoveryResults");
     ul.innerHTML = "";
+
+    let tags = getTagsResponse.tags;
 
     tags.forEach(tag => {
         const li = document.createElement("li");
@@ -92,7 +94,7 @@ function updateDiscoveryUI(tags, lat, lng) {
     });
 
     try {
-        document.getElementById("page-number").textContent = (currentPage + 1);
+        document.getElementById("page-number").textContent = ((currentPage + 1) + "/" + (getTagsResponse.totalPages));
     } catch (err) {
         alert(err.message)
     }
@@ -169,7 +171,7 @@ async function runDiscovery() {
 
     const result = await getGeoTags(lat, lng, currentPage, search);
     currentTagListLength = result.tags.length;
-    updateDiscoveryUI(result.tags, lat, lng);
+    updateDiscoveryUI(result, lat, lng);
 }
 
 async function postGeoTag(tag, token) {

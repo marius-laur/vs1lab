@@ -83,6 +83,8 @@ router.get('/api/geotags', (req, res) => {
       geoTags = geoTagStore.searchNearbyGeoTags(lat, lng, rad, req.query.s);
     }
 
+    let totalPages = Math.trunc(geoTags.length / elementsPerPage) + 1;
+
     let start = page * elementsPerPage;
     let end = start + elementsPerPage;
 
@@ -90,6 +92,7 @@ router.get('/api/geotags', (req, res) => {
 
     res.json({
       page,
+      totalPages,
       elementsPerPage,
       tags: pagedTags
     });
